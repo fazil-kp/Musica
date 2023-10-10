@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 class MusicaHomePage extends StatefulWidget {
   const MusicaHomePage({Key? key, required this.title});
@@ -14,10 +15,35 @@ class _MusicaHomePageState extends State<MusicaHomePage> {
   final player = AudioPlayer();
   bool isPlaying = false;
   bool isLiked = false;
+  double audioDuration = 0.0;
+  double currentPosition = 0.0;
   String currentAudio = 'audio.mp3'; // Initially set to audio.mp3
+  late Timer timer;
+
+  @override
+  void initState() {
+    super.initState();
+    player.onDurationChanged.listen((duration) {
+      setState(() {
+        audioDuration = duration.inSeconds.toDouble();
+      });
+    });
+
+    // Start a timer to periodically update the audio position
+    timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
+      if (isPlaying) {
+        player.getCurrentPosition().then((position) {
+          setState(() {
+            currentPosition = position!.inSeconds.toDouble();
+          });
+        });
+      }
+    });
+  }
 
   @override
   void dispose() {
+    timer.cancel(); // Cancel the timer when disposing the widget
     player.dispose();
     super.dispose();
   }
@@ -53,10 +79,15 @@ class _MusicaHomePageState extends State<MusicaHomePage> {
         player.pause();
         isPlaying = false;
       } else {
-        player.play(AssetSource(currentAudio));
+        player.play(AssetSource(currentAudio),
+            position: Duration(seconds: currentPosition.toInt()));
         isPlaying = true;
       }
     });
+  }
+
+  void seekTo(double time) {
+    player.seek(Duration(seconds: time.toInt()));
   }
 
   @override
@@ -66,7 +97,8 @@ class _MusicaHomePageState extends State<MusicaHomePage> {
         backgroundColor: Colors.black,
         title: Text(
           widget.title,
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22),
         ),
         centerTitle: true,
       ),
@@ -95,7 +127,17 @@ class _MusicaHomePageState extends State<MusicaHomePage> {
             'Click play to start listening',
             style: TextStyle(fontSize: 18.0, color: Colors.white),
           ),
-          SizedBox(height: 48.0),
+          SizedBox(height: 30.0),
+          Slider(
+            activeColor: Colors.green,
+            min: 0.0,
+            max: audioDuration,
+            value: currentPosition,
+            onChanged: (value) {
+              seekTo(value);
+            },
+          ),
+          SizedBox(height: 30.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
