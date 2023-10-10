@@ -18,7 +18,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home:  const MyHomePage(title: 'Musica'),
+      debugShowCheckedModeBanner: false,
+      home:   MyHomePage(title: 'Musica',),
     );
   }
 }
