@@ -147,7 +147,7 @@ class _MusicaHomePageState extends State<MusicaHomePage> {
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             ),
             child: Text(
-              'Skip Audio',
+              'Skip',
               style: TextStyle(fontSize: 18, color: Colors.white),
             ),
           ),
