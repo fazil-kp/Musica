@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
       ),
       debugShowCheckedModeBanner: false,
-      home:   MyHomePage(title: 'Musica',),
+      home:   MusicaHomePage(title: 'Musica',),
     );
   }
 }

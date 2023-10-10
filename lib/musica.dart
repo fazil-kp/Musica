@@ -1,16 +1,16 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title});
+class MusicaHomePage extends StatefulWidget {
+  const MusicaHomePage({Key? key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MusicaHomePage> createState() => _MusicaHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MusicaHomePageState extends State<MusicaHomePage> {
   final player = AudioPlayer();
   bool isPlaying = false;
   bool isLiked = false;
